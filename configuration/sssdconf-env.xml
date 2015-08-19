@@ -55,14 +55,14 @@ min_id = 1000
 #ad_domain =
 
 # The AD server hosting the KDC service
-ad_server = {{hostname}}
+ad_server = {{ldap_hostname}}
 
 # ad_hostname: When authenticating via Kerberos, SSSD will automatically use the FQDN of *this* host. Try leaving it blank. But if your host can't figure out it's FQDN (you'll know from the logs), you can use this parameter to explicitly set it
-# ad_hostname = {{hostname}}
+# ad_hostname = {{ldap_hostname}}
 
 # ldap_uri: The AD server hosting the LDAP service. 
 # LDAP (plain text or TLS) and SSL (ldaps://) is also supported, but you'll need to configure the CA certifcate within OpenSSL
-ldap_uri = ldap://{{hostname}}
+ldap_uri = {{ldap_protocol}}://{{ldap_hostname}}
 
 # ldap_schema: Instructs SSSD on which LDAP attributes to use to derive the user/group memberships 
 ldap_schema = ad

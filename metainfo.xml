@@ -29,7 +29,7 @@
               </osSpecific>
             </osSpecifics> 
       	    <configuration-dependencies>
-	        	<config-type>sssd-config</config-type>
+	        	<config-type>ambari-sssd-config</config-type>
 	        	<config-type>sssdconf-env</config-type>	        	
 	        	<config-type>nsswitch-env</config-type>        	
       	    </configuration-dependencies>

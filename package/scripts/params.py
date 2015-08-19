@@ -6,12 +6,16 @@ from resource_management import *
 config = Script.get_config()
 
 
-domain=config['configurations']['sssd-config']['domain.name']
-bind_dn=config['configurations']['sssd-config']['bind.user']
-bind_password=config['configurations']['sssd-config']['bind.password']
-hostname=config['configurations']['sssd-config']['ldap.host']
+domain=config['configurations']['ambari-sssd-config']['domain.name']
+bind_dn=config['configurations']['ambari-sssd-config']['bind.user']
+bind_password=config['configurations']['ambari-sssd-config']['bind.password']
+ldap_hostname=config['configurations']['ambari-sssd-config']['ldap.host']
+ldap_protocol=config['configurations']['ambari-sssd-config']['ldap.protocol']
+address=config['configurations']['ambari-sssd-config']['ldap.address']
+address=address.strip()
 
 sssd_template_config = config['configurations']['sssdconf-env']['content']
 
 nsswitch_template_config = config['configurations']['nsswitch-env']['content']
+
 

@@ -1,36 +1,16 @@
 import sys, os, pwd, signal, time
 from resource_management import *
 from subprocess import call
-
+import socket
 
 class Master(Script):
   def install(self, env):
     # Install packages listed in metainfo.xml
     self.install_packages(env)
-
     import params
-
-    service_packagedir = os.path.realpath(__file__).split('/scripts')[0]     
-
 
     self.configure(env)
     
-    #Execute('sed -i "s/passwd:.*files/passwd: files  ldap/g" /etc/nsswitch.conf')
-    #Execute('sed -i "s/group:.*files/group: files  ldap/g" /etc/nsswitch.conf')
-
-    #Execute('sed -i "s/gid nslcd/gid root/g" /etc/nslcd.conf')
-    #Execute('sed -i "s/base dc=example,dc=com/base '+params.dist_name+'/g" /etc/nslcd.conf') 
-    #Execute('sed -i "s#uri ldap://127.0.0.1/#uri ldap://'+params.ldap_url+'/#g" /etc/nslcd.conf')
-
-
-    #Execute('sed -i "s/#base.*group.*ou=Groups,dc=example,dc=com/base   group '+params.groups_name+'/g" /etc/nslcd.conf')
-    #Execute('sed -i "s/#base   passwd ou=People,dc=example,dc=com/base   passwd '+params.users_name+'/g" /etc/nslcd.conf')
-    #Execute('sed -i "s/#filter passwd (objectClass=aixAccount)/filter passwd (objectClass=posixaccount)/g" /etc/nslcd.conf')
-
-    #Execute('sed -i "s/#map.*passwd uidNumber.*uid/map    passwd uidNumber         uidNumber/g" /etc/nslcd.conf')
-    #Execute('sed -i "s/#map.*passwd gidNumber.*gid/map    passwd gidNumber         gidNumber/g" /etc/nslcd.conf')
-    #Execute('sed -i "s/#filter group  (objectClass=aixAccessGroup)/filter group  (objectClass=posixgroup)/g" /etc/nslcd.conf')
-
     Execute('service sssd start')
     Execute('chkconfig sssd on')
 
@@ -52,7 +32,15 @@ class Master(Script):
     Execute('ed -s '+sssd_conf+' <<< w')    
     Execute('ed -s '+sssd_conf+' <<< w')    
 
-
+    #only if user provided address...
+    if (params.address):
+      try:
+        ip=socket.gethostbyname(params.ldap_hostname)
+        Execute('echo Ldap IP detected to be '+ip+' . No need to write hosts entry')
+      except socket.gaierror:
+        Execute('echo Ldap IP could not be detected, writing hosts entry')        
+        Execute('echo '+params.address+' '+params.ldap_hostname+' >> /etc/hosts')
+        
   def stop(self, env):
     import params
     #import status_params
