@@ -52,21 +52,6 @@ On bottom left -> Actions -> Add service -> check SSSD server -> Next -> Next ->
 - You can see the parameters you configured under 'Configs' tab
 ![Image](../master/screenshots/screenshot-freeipa-stack-config.png?raw=true)
 
-- To remove the SSSD service: 
-  - Stop the service via Ambari
-  - Delete the service
-  
-    ```
-    curl -u admin:admin -i -H 'X-Requested-By: ambari' -X DELETE http://sandbox.hortonworks.com:8080/api/v1/clusters/Sandbox/services/SSSD
-    ```
-  - Remove SSSD rpm and config files 
-  
-    ```
-	rpm -e nss-pam-ldapd-0.8.12-rhel6.13.1.x86_64
-	rm -f /etc/nslcd.conf
-	rm -f /etc/nsswitch.conf    
-    ```
-
 - One benefit to wrapping the component in Ambari service is that you can now monitor/manage this service remotely via REST API
 ```
 export SERVICE=SSSD
@@ -84,14 +69,29 @@ curl -u admin:$PASSWORD -i -H 'X-Requested-By: ambari' -X PUT -d '{"RequestInfo"
 curl -u admin:$PASSWORD -i -H 'X-Requested-By: ambari' -X PUT -d '{"RequestInfo": {"context" :"Stop $SERVICE via REST"}, "Body": {"ServiceInfo": {"state": "INSTALLED"}}}' http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER/services/$SERVICE
 ```
 
+- To remove the SSSD service: 
+  - Stop the service via Ambari
+  - Delete the service
+  
+    ```
+    curl -u admin:admin -i -H 'X-Requested-By: ambari' -X DELETE http://sandbox.hortonworks.com:8080/api/v1/clusters/$CLUSTER/services/SSSD
+    ```
+  - Remove SSSD rpm and config files 
+  
+    ```
+	yum remove sssd
+	rm -f /etc/sssd/sssd.conf  
+    ```
+
+
 #### Browse LDAP users from Hadoop cluster
 
 - Your operating system can now recognize your LDAP users (e.g. in OpenLDAP) 
 ```
-# groups ali
-ali : sales marketing hr legal finance
-# id ali
-uid=75000010(ali) gid=75000005(sales) groups=75000005(sales),75000001(marketing),75000002(hr),75000003(legal),75000004(finance)
+[root@sandbox ~]# id harry
+uid=1550801107(harry) gid=1550800513(Domain Users) groups=1550800513(Domain Users),1550801108(Marketing),1550801109(Sales)
+[root@sandbox ~]# groups harry
+harry : Domain Users Marketing Sales
 ``` 
 
 
