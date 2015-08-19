@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+ 
+<configuration>
+
+  <property>
+    <name>ldap.host</name>
+    <value>ad-hdp.cloud.hortonworks.com</value>
+    <description>AD/LDAP hostname</description>
+  </property> 
+
+  <property>
+    <name>ldap.address</name>
+    <value> </value>
+    <description>(Optional) AD/LDAP IP address. If set, it will be used to create /etc/hosts entry for ldap.host</description>
+  </property> 
+
+  <property>
+    <name>ldap.protocol</name>
+    <value>ldap</value>
+    <description>LDAP protocol. Set to either ldap (for non-secure) or ldaps (for secure)</description>
+  </property> 
+
+  <property>
+    <name>domain.name</name>
+    <value>AD-HDP.COM</value>
+    <description>Domain name connecting to e.g. AD-HDP.COM</description>
+  </property> 
+  
+  <property>
+    <name>bind.user</name>
+    <value>CN=LDAP Access,OU=Service Accounts,DC=AD-HDP,DC=COM</value>
+    <description>Bind user e.g. CN=LDAP Access,OU=Service Accounts,DC=AD-HDP,DC=COM</description>
+  </property> 
+  
+  <property>
+    <name>bind.password</name>
+    <value></value>
+    <property-type>PASSWORD</property-type>
+    <description>Bind password</description>
+  </property>   
+
+  
+</configuration>
+
