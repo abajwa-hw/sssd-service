@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+  
+ <property>
+    <name>content</name>
+    <description>This is the jinja template for /etc/sssd.conf file</description>
+    <value>
+    
+# This section defines the global parameters for the service
+[sssd]
+config_file_version = 2
+
+# domains: The 'domains' parameter doubles as a mnemonic for an 'identity provider', and later on the actual AD domain we're connecting to
+domains = {{domain}}
+
+# services: The 'services' I require. Note that I only want the 'nss' service (users/groups lookup). Don't want PAM, especially on the Master/Data nodes
+services = nss
+
+# [nss]: This is where we configure the NSS service
+[nss]
+# Filter out the users and groups that we don't want Hadoop to see. Not important. But feel free to add more if you like.
+filter_groups = root
+filter_users = root
+
+reconnection_retries = 3
+entry_cache_timeout = 300
+entry_cache_nowait_percentage = 75
+
+# debug levels 5 to 7 seem to be appropriate while testing. I suggest starting with level five.
+debug_level = 5
+
+# This is where we define the properties of this particular Identity Provider (AD LDAP instance running on 'hwxincdc.cloud.hortonworks.com')
+[domain/{{domain}}]
+
+# id_provider: Active Directory supports both "ad" (must create Kerberos SPNs) or "ldap" (can specify simple password later on).
+id_provider = ldap
+
+# Because I've specified 'ldap', I can get away with a simple password to authenticate. Tip: Don't try to type DNs, instead copy/paste them from a suitable LDAP Browing tool
+
+ldap_default_bind_dn = {{bind_dn}}
+ldap_default_authtok_type = password
+ldap_default_authtok = {{bind_password}} 
+
+# auth_provider: I don't want authentication, and especially not SSH access to my Hadoop master/data nodes 
+auth_provider = none
+
+#chpass_provider/access_provider: Don't need/don't care
+#chpass_provider = 
+#access_provider = 
+min_id = 1000
+
+#ad_domain = (No need to define it, because it takes it from [domain/*Name*] above)
+#ad_domain =
+
+# The AD server hosting the KDC service
+ad_server = {{hostname}}
+
+# ad_hostname: When authenticating via Kerberos, SSSD will automatically use the FQDN of *this* host. Try leaving it blank. But if your host can't figure out it's FQDN (you'll know from the logs), you can use this parameter to explicitly set it
+# ad_hostname = {{hostname}}
+
+# ldap_uri: The AD server hosting the LDAP service. 
+# LDAP (plain text or TLS) and SSL (ldaps://) is also supported, but you'll need to configure the CA certifcate within OpenSSL
+ldap_uri = ldap://{{hostname}}
+
+# ldap_schema: Instructs SSSD on which LDAP attributes to use to derive the user/group memberships 
+ldap_schema = ad
+
+# for SID-UID mapping: Instructs SSSD to handle the complex Domain SID group mappings automatically 
+ldap_id_mapping = True
+
+# Enable the cache on this host (gentler on the AD servers). Delete it if you need to from /var/lib/sss/db/*
+cache_credentials = true
+
+# performance
+ldap_referrals = false
+
+
+    </value>
+  </property>
+  
+        
+</configuration>

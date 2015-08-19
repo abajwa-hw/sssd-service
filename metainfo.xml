@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<metainfo>
+    <schemaVersion>2.0</schemaVersion>
+    <services>
+        <service>
+            <name>SSSD</name>
+            <displayName>SSSD</displayName>
+            <comment>SSSD is a service that provides access to identity and authentication remote resource through a common framework that can provide caching and offline support to the system</comment>
+            <version>1.0.0</version>
+            <components>
+                <component>
+                  <name>SSSD_MASTER</name>
+                  <displayName>SSSD</displayName>
+                  <category>MASTER</category>
+                  <cardinality>1+</cardinality>
+                  <commandScript>
+                    <script>scripts/master.py</script>
+                    <scriptType>PYTHON</scriptType>
+                    <timeout>5000</timeout>
+                  </commandScript>
+                </component>
+            </components>
+            <osSpecifics>
+              <osSpecific>
+                <osFamily>redhat6</osFamily>
+                <packages>
+                   <package><name>sssd</name></package>                                                
+                </packages>
+              </osSpecific>
+            </osSpecifics> 
+      	    <configuration-dependencies>
+	        	<config-type>sssd-config</config-type>
+	        	<config-type>sssdconf-env</config-type>	        	
+	        	<config-type>nsswitch-env</config-type>        	
+      	    </configuration-dependencies>
+            <restartRequiredAfterChange>false</restartRequiredAfterChange>
+        </service>
+    </services>
+</metainfo>
