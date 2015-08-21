@@ -34,6 +34,8 @@ debug_level = 5
 # This is where we define the properties of this particular Identity Provider (AD LDAP instance running on 'hwxincdc.cloud.hortonworks.com')
 [domain/{{domain}}]
 
+fallback_homedir = /home/%u
+
 # id_provider: Active Directory supports both "ad" (must create Kerberos SPNs) or "ldap" (can specify simple password later on).
 id_provider = ldap
 
