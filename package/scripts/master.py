@@ -11,7 +11,8 @@ class Master(Script):
 
     self.configure(env)
     
-    Execute('service sssd start')
+    #Execute('service sssd start')
+    Execute('authconfig --enablemkhomedir --update')
     Execute('chkconfig sssd on')
 
 
@@ -29,8 +30,8 @@ class Master(Script):
     content=InlineTemplate(params.sssd_template_config)    
     File(format(sssd_conf), content=content, owner='root',group='root', mode=0600)
     #add new lines at end as Ambari removes trailing newlines and sssd requires this
-    Execute('ed -s '+sssd_conf+' <<< w')    
-    Execute('ed -s '+sssd_conf+' <<< w')    
+    #Execute('ed -s '+sssd_conf+' <<< w')    
+    #Execute('ed -s '+sssd_conf+' <<< w')    
 
     #only if user provided address...
     if (params.address):
