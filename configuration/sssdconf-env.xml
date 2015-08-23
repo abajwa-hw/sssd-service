@@ -39,6 +39,9 @@ fallback_homedir = /home/%u
 # id_provider: Active Directory supports both "ad" (must create Kerberos SPNs) or "ldap" (can specify simple password later on).
 id_provider = ldap
 
+# If you created Kerberos SPNs and selected "ad", you can also set below to automatically acquire a Kerberos TGT for your user? (No kinit necessary!)
+# ad_provider=ad
+
 # Because I've specified 'ldap', I can get away with a simple password to authenticate. Tip: Don't try to type DNs, instead copy/paste them from a suitable LDAP Browing tool
 
 ldap_default_bind_dn = {{bind_dn}}
