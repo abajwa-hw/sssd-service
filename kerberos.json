@@ -1,0 +1,17 @@
+{
+  "services": [
+    {
+      "name": "SSSD",
+      "identities": [
+        {
+          "name": "/smokeuser"
+        }
+      ],
+      "components": [
+        {
+          "name": "SSSD_MASTER"
+        }
+      ]
+    }
+  ]
+}
