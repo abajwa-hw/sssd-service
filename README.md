@@ -6,6 +6,12 @@ This can be used in conjunction with [other security related Ambari services](ht
   - [Steps](https://github.com/abajwa-hw/ambari-workshops/blob/master/blueprints-demo-security.md) on how to use blueprints to deploy a cluster with OpenLDAP, KDC, SSSD/SSSD, and then run Ambari kerberos wizard
 
 
+Limitations:
+
+- This is not an officially supported service and *is not meant to be deployed in production systems*. It is only meant for testing demo/purposes
+- It does not support Ambari/HDP upgrade process and will cause upgrade problems if not removed prior to upgrade
+
+
 Author: [Ali Bajwa](https://www.linkedin.com/in/aliabajwa)
 
 #### Setup
